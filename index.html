@@ -1,0 +1,735 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>品牌與藝術家管理室</title><meta name="description" content="品牌資料、分類與聯繫進度管理工具"><style>
+:root{--bg:#f5f4ef;--paper:#fffefa;--ink:#28372e;--muted:#7a827b;--line:#dfe3da;--green:#43634d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 system-ui,sans-serif}button,input,select,textarea{font:inherit}button,a,input,select,textarea{outline-offset:4px}button{cursor:pointer;border:1px solid var(--line);border-radius:7px;padding:9px 15px;background:var(--paper);color:var(--ink)}button:hover{border-color:var(--green)}.primary{background:var(--green);color:white;border-color:var(--green)}aside{width:220px;background:#263d31;color:#e6eee5;position:fixed;inset:0 auto 0 0;padding:32px 22px;display:flex;flex-direction:column}.logo{font-size:22px;letter-spacing:.12em}.small{font-size:11px;letter-spacing:.14em;opacity:.65}aside nav{margin-top:55px}aside nav button{display:block;background:transparent;color:inherit;border:0;text-align:left;width:100%;margin:6px 0}aside nav button.active{background:#ffffff16}aside footer{margin-top:auto;font-size:12px;color:#b7c5b9}main{margin-left:220px;max-width:1700px;padding:32px 42px}.topline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line);padding-bottom:22px}.intro{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:35px 0 26px}h1{font-size:32px;letter-spacing:-1px;margin:0 0 6px}p{margin:0}.muted{color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:25px}.stat{padding:20px 24px;background:var(--paper);border:1px solid var(--line);border-radius:10px}.stat b{display:block;font-size:30px;font-weight:500}.stat span{font-size:12px;color:var(--muted)}.toolbar{display:flex;flex-wrap:wrap;gap:10px;background:var(--paper);border:1px solid var(--line);padding:16px;border-radius:10px}input,select,textarea{border:1px solid var(--line);border-radius:6px;padding:10px;background:var(--paper);color:var(--ink)}#search{flex:1;min-width:200px}.results{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:23px;display:flex;flex-direction:column;min-height:290px;position:relative}.card:hover{border-color:#a3b5a5;box-shadow:0 5px 20px #223c3008}.cardtop{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}.tag{background:#edf1e9;padding:2px 9px;border-radius:20px;color:#526b50}.card h2{font-size:20px;margin:18px 0 2px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:12px}.desc{color:#657065;font-size:13px;margin:15px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.cardfoot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:15px;border-top:1px solid var(--line)}.links{display:flex;gap:12px}.links a{font-size:12px;color:var(--green);text-decoration:none}.edit{padding:4px 10px;font-size:12px}.empty{padding:60px;text-align:center;grid-column:1/-1}.notice{font-size:12px;color:var(--muted);margin:24px 0}dialog{border:1px solid var(--line);border-radius:13px;padding:0;max-width:720px;width:calc(100% - 30px);max-height:90vh;color:var(--ink);background:var(--paper)}dialog::backdrop{background:#17291f80}form{padding:26px}.formhead{display:flex;justify-content:space-between;align-items:center}.formhead h2{margin:0}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:20px 0}label{display:flex;flex-direction:column;gap:5px;font-size:12px}.full{grid-column:1/-1}textarea{min-height:85px;resize:vertical}.formfoot{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:20px}.danger{color:#a0483a}#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#263d31;color:white;border-radius:8px;padding:12px 24px;z-index:10}#toast:empty{display:none}.tablewrap{overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:16px;border-bottom:1px solid var(--line)}th{font-size:12px;color:var(--muted);background:#edf1e9}a{color:var(--green)}@media(min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}aside{width:180px}main{margin-left:180px;padding:25px}.intro{align-items:flex-start;flex-direction:column}}@media(max-width:700px){aside{position:static;width:auto;padding:15px 20px;display:block}aside nav{margin:10px 0 0;display:flex}aside nav button{margin:0}aside footer,aside .small{display:none}main{margin:0;padding:20px 16px}.topline{padding-bottom:15px}.intro{margin-top:25px}h1{font-size:27px}.stats{grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:13px 18px}.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}.toolbar select{flex:1;min-width:120px}}
+
+.work-preview{display:block;width:100%;text-align:left;background:#edf1e8;border:1px solid #e1e7da;border-radius:7px;padding:12px 14px;margin:0 0 18px;line-height:1.5}.work-preview-label{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#6a7966;margin-bottom:6px}.work-preview-title{display:block;font-size:13px;font-weight:600;overflow-wrap:anywhere}.work-preview-more{display:block;font-size:11px;color:var(--muted);margin-top:4px}.work-editor{border-top:1px solid var(--line);padding:18px 0}.work-editor h3{font-size:17px;margin:0}.work-editor>p{font-size:12px;margin:8px 0 15px}.work-field{border:1px solid var(--line);border-radius:9px;padding:16px;margin:12px 0;background:#f5f6f1}.work-field .fields{margin:12px 0 0}.work-field-head{display:flex;gap:12px;align-items:center;justify-content:space-between}.work-field label{min-width:0}.work-field input{min-width:0;width:100%}#gallery{max-width:800px}.gallery-head,.gallery-footer{display:flex;justify-content:space-between;gap:15px;padding:22px 26px;align-items:center}.gallery-head{border-bottom:1px solid var(--line)}.gallery-head h2{margin:3px 0;font-size:23px}.gallery-footer{border-top:1px solid var(--line);font-size:12px}.gallery-footer>span{max-width:75%}.work-list{padding:22px 26px;display:grid;gap:16px}.work-detail{padding:22px;border:1px solid var(--line);border-radius:9px;background:#f5f6f1}.work-detail h3{font-size:21px;line-height:1.4;margin:8px 0 12px;overflow-wrap:anywhere}.work-detail>p{white-space:pre-wrap;color:#657065;font-size:14px}.work-source{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.work-missing{padding:45px 26px;text-align:center}.work-missing p{margin:12px 0}@media(max-width:700px){.gallery-head,.gallery-footer{padding:16px}.gallery-head h2{font-size:20px}.work-list{padding:16px}.work-detail{padding:16px}.gallery-footer{align-items:flex-start}.gallery-footer>span{max-width:65%}}
+</style><body><aside><div class="logo">名錄室<span style="color:#a8bb91">.</span></div><div class="small">BRANDS & ARTISTS</div><nav><button class="active" data-scope="all">▦　全部名錄</button><button data-scope="follow">◷　聯繫追蹤</button><button data-scope="review">◇　待確認資料</button></nav><footer>讓每一個合作，<br>從有序的整理開始。<hr style="border:0;border-top:1px solid #ffffff22;margin:20px 0">FILTER017 BRAND/ARTIST DATA · v1.1</footer></aside><main><div class="topline"><span>工作空間　/　品牌與藝術家</span><span>● 本機儲存</span></div><section class="intro"><div><div class="small muted">YOUR CURATED COLLECTION</div><h1 id="heading">品牌與藝術家名錄</h1><p class="muted">收藏靈感，整理資料，推進每一次合作。</p></div><div class="actions"><button id="backup">匯出備份</button><button id="csv">匯出 CSV</button><button id="import">匯入備份</button><button class="primary" id="add">＋ 新增品牌</button></div></section><section class="stats" id="stats"></section><section class="toolbar"><input type="search" id="search" placeholder="搜尋名稱、介紹、聯繫人或備註…" aria-label="搜尋名錄"><select id="category" aria-label="分類"></select><select id="country" aria-label="國籍"></select><select id="status" aria-label="聯繫狀態"></select></section><div class="results"><span class="muted" id="count"></span><div class="actions"><button id="clear">清除篩選</button><button id="view" aria-pressed="false">切換表格</button></div></div><section id="records" class="grid"></section><p class="notice">代表商品／作品由公開來源選錄，非銷售排名；詳見各件來源。品牌資料沿用自 <a href="https://brandsandartistslist.netlify.app/" target="_blank" rel="noopener noreferrer">原始名錄 ↗</a>，未另行查證。修改僅儲存在此瀏覽器，請定期匯出 JSON 備份；CSV 可用於試算表。跨裝置請使用匯出／匯入備份。</p></main><dialog id="editor"><form id="form"><div class="formhead"><h2 id="formtitle">品牌資料</h2><button type="button" id="close" aria-label="關閉">✕</button></div><div class="fields" id="fields"></div><section class="work-editor"><div class="formhead"><h3>代表商品／作品</h3><button id="add-work" type="button">＋ 新增作品</button></div><p class="muted">填入名稱、簡介與官網／IG 來源，可新增多件。</p><div id="work-fields"></div></section><div class="formfoot"><button class="danger" id="delete" type="button">刪除此筆</button><div class="actions"><button type="button" id="cancel">取消</button><button type="submit" class="primary">儲存資料</button></div></div></form></dialog><dialog id="gallery" aria-labelledby="gallery-title"><div class="gallery-head"><div><div class="small muted">REPRESENTATIVE WORKS</div><h2 id="gallery-title"></h2></div><button type="button" id="gallery-close" aria-label="關閉作品瀏覽">✕</button></div><div id="gallery-body"></div><div class="gallery-footer"><span id="gallery-note" class="muted"></span><button id="gallery-edit" class="primary">編輯作品</button></div></dialog><input id="file" type="file" accept=".json,application/json" hidden><div id="toast" role="status"></div><script id="seed" type="application/json">[
+  {
+    "id": "1",
+    "name": "Post General",
+    "category": "雜貨道具",
+    "country": "日本",
+    "description": "由日本 Creer 推出的生活工具與戶外風格品牌，重新檢視現有物件的材質、用途與功能，以復古工業語彙打造日用品、收納器具及旅行／工作配件。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜Instagram 帳號由清單提供者補充。",
+    "instagram": "https://www.instagram.com/postgeneral_official/",
+    "website": "https://postgeneral.jp/",
+    "source": "https://postgeneral.jp/f/about",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "HEAVY DUTY BASKET — Olive",
+        "description": "耐用收納籃，適合日常與戶外物品收納。",
+        "source": "https://postgeneral.jp/c/cat/storage/gd34",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "2",
+    "name": "Puebco",
+    "category": "雜貨道具",
+    "country": "日本",
+    "description": "將回收降落傘布、工業材料與老物件重新設計為包袋、收納和家居用品，結合機能、再利用與不完美的復古質感。",
+    "verification": "Instagram 已更新",
+    "sourceNote": "資料註記｜Instagram 已依清單提供者資料更新為日本帳號 @puebco_japan。",
+    "instagram": "https://www.instagram.com/puebco_japan/",
+    "website": "https://puebco.com/",
+    "source": "https://puebco.tw/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "VINTAGE PARACHUTE LIGHT BAG / Olive",
+        "description": "以回收降落傘布搭配再利用工業用織帶製成的輕量提袋。",
+        "source": "https://puebco.com/products/vintage-parachute-light-bag-olive",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      },
+      {
+        "title": "WHITE QUILTED SNOW JACKET LAPTOP CASE / 13″",
+        "description": "將二手軍用雪地外套布料與舊織帶再利用的 13 吋筆電收納袋。",
+        "source": "https://puebco.com/products/white-quilted-snow-jacket-laptop-case-13",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "3",
+    "name": "FILTER017",
+    "category": "生活風格服飾",
+    "country": "台灣",
+    "description": "2004 年創立於台北的台灣跨領域創意團隊及生活風格服飾品牌，以「元素混合」為創作方法，融合街頭文化、藝術、復古流行與實用機能，延伸至服飾、風格戶外及居家生活。2011 年於台中設立結合工作室、產品開發與選物店的 Crealive Dept.。",
+    "verification": "新增資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/filter017/",
+    "website": "https://www.filter017.com/home",
+    "source": "https://www.filter017.com/about",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "UNILIONS LOGO & TYPO DESIGN COLLECTION 2015–2018",
+        "description": "FILTER017 為統一獅製作的標誌與字體視覺設計作品集。",
+        "source": "https://www.filter017.com/works/UNILIONS_LOGO_TYPO_DESIGN_COLLECTION_2015_2018/",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "4",
+    "name": "Factory Normal",
+    "category": "香氛",
+    "country": "韓國",
+    "description": "韓國香氛生活品牌，以「為平凡日常帶來驚喜」為概念，產品包括香氛蠟燭、擴香、香氛袋、護手霜及居家香氛。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜Instagram 帳號由清單提供者補充。",
+    "instagram": "https://www.instagram.com/factory_normal/",
+    "website": "https://factorynormal.com/",
+    "source": "https://factorynormal.gobizkorea.com/mini/site/companyProfile.do",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Terracotta 車用香氛掛飾",
+        "description": "以陶土造型作為載體的車用香氛掛飾。",
+        "source": "https://factorynormal.com/product/detail.html?product_no=128&cate_no=1&display_group=2",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "5",
+    "name": "Faust's Co.",
+    "category": "香氛",
+    "country": "美國",
+    "description": "Details Co. 旗下香氛品牌，以 Designer Fragrance Cards（設計師香氛卡）為核心，結合攝影、圖像藝術與植物香氣，將香氛轉化成可隨身攜帶、使用與收藏的日常藝術物件。作品系列包括 Nod Young 設計的 Beyond、攝影師 Yusin Law 的 The Tokyo Atmosphere；另預告 2027 年與藝術家 Solomon Enos 合作。香氛卡可放置於書本、包袋及衣櫃等日常空間。",
+    "verification": "品牌資料已補充",
+    "sourceNote": "資料註記｜Details Co. 旗下關係由清單提供者確認；其他產品與合作內容取自品牌頁面。官網標示「Design preview · Not yet on sale」，目前尚未開放購買；Instagram 尚未提供。",
+    "instagram": "",
+    "website": "https://fausts-co-atelier.nodyoung.chatgpt.site/",
+    "source": "https://fausts-co-atelier.nodyoung.chatgpt.site/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "The Tokyo Atmosphere — Solitude No.08",
+        "description": "Yusin Law 攝影系列香氛卡；品牌網站標示為設計預覽，尚未開放販售。",
+        "source": "https://fausts-co-atelier.nodyoung.chatgpt.site/shop.html?collection=tokyo",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      },
+      {
+        "title": "Beyond — North No.09",
+        "description": "Nod Young 圖像設計系列香氛卡；品牌網站標示為設計預覽，尚未開放販售。",
+        "source": "https://fausts-co-atelier.nodyoung.chatgpt.site/shop.html?collection=beyond",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "品牌網站標示「Design preview · Not yet on sale」，此處僅作設計作品瀏覽。"
+  },
+  {
+    "id": "6",
+    "name": "Natal Design",
+    "category": "戶外雜貨",
+    "country": "日本",
+    "description": "以「BE YOURSELF」為精神，將復古服裝、藝術文化、幽默感與戶外機能結合；推出服飾、露營相關配件及跨品牌聯名。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/nataldesign1999/",
+    "website": "https://natal.jp/",
+    "source": "https://natal.jp/blogs/feature/about-natal-design",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "MUSHROOM MATE STOOL",
+        "description": "YAN☆YAN 與 NATAL DESIGN 合作的蘑菇造型座椅，結合絨毛材質與表情細節。",
+        "source": "https://natal.jp/products/%E6%8A%BD%E9%81%B8%E8%B2%A9%E5%A3%B2-4%E6%9C%88%E4%B8%8A%E6%97%AC%E4%BB%A5%E9%99%8D%E3%81%8A%E5%B1%8A%E3%81%91%E4%BA%88%E5%AE%9A-mushroom-mate-stool",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "7",
+    "name": "Metalize",
+    "category": "飾品配件",
+    "country": "台灣",
+    "description": "成立於 2010 年，以美式復古文化與金工技術為核心的飾品配件品牌，擅長仿舊質感、金屬工藝、經典圖騰與客製設計。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜Instagram 帳號由清單提供者補充。",
+    "instagram": "https://www.instagram.com/metalize_productions/",
+    "website": "https://metalize-co.com/",
+    "source": "https://metalize-co.com/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "925 銀製 OT 扣項鍊 — 50 公分",
+        "description": "以手工製作的 925 銀扣具搭配復古樣式鏈條。",
+        "source": "https://metalize-co.com/index.php?route=product/product&product_id=149",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "8",
+    "name": "Hakkei",
+    "category": "生活風格配件",
+    "country": "台灣",
+    "description": "以布製植物、園藝概念、擬人角色與配件為主要創作方向，將植栽趣味與古著布料、玩具及街頭文化結合。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/hakkei.made/",
+    "website": "https://www.hakkeigoods.com/",
+    "source": "https://straightpress.jp/20241022/1228879",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "小黑王丸 — 科比亞波",
+        "description": "以仙人掌為靈感的手工布植物角色，使用棉與布料製作。",
+        "source": "https://www.hakkeigoods.com/collections/%E6%96%B0%E5%93%81%E6%8E%A8%E8%96%A6/products/%E5%B0%8F%E9%BB%91%E7%8E%8B%E4%B8%B8-%E7%A7%91%E6%AF%94%E4%BA%9E%E6%B3%A2",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "9",
+    "name": "LIBERTY FORCE",
+    "category": "生活風格服飾",
+    "country": "日本",
+    "description": "2020 年於沖繩創立，以「CHASE YOUR BRIGHT FUTURE」為主題，跨足服飾、藝術與生活產品，並透過跨地域快閃和合作傳遞沖繩文化。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜Instagram 帳號由清單提供者補充。",
+    "instagram": "https://www.instagram.com/libertyforce_teruya/",
+    "website": "https://www.libertyforce.jp/",
+    "source": "https://www.libertyforce.jp/pages/about-us",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "P-CHAN T-SHIRT",
+        "description": "以雞角色 P-CHAN 為主題的棉質圖像 T 恤。",
+        "source": "https://www.libertyforce.jp/products/t-shirt",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "10",
+    "name": "TACOMA FUJI RECORDS",
+    "category": "生活風格服飾",
+    "country": "日本",
+    "description": "2008 年始於東京的圖像 T-shirt 品牌，最初以「不存在的音樂人及唱片周邊」為概念，邀集藝術家設計虛構音樂故事，跨足音樂、戶外與日常文化。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/tacomafuji/",
+    "website": "https://tacomafuji.net/",
+    "source": "https://tacomafuji.net/about/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "DUB SAWYER Tee — designed by Tomoo Gokita",
+        "description": "由五木田智央（Tomoo Gokita）設計圖像的品牌 T 恤。",
+        "source": "https://tacomafuji.shop-pro.jp/?pid=194393029",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "11",
+    "name": "Chi-bee",
+    "category": "生活風格服飾",
+    "country": "日本",
+    "description": "由插畫家 Take（伊藤武宏）發展的圖像品牌，角色 Nelson 融合 1970–80 年代風格、衝浪、滑板、單車、露營與幽默的城市休閒精神。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/chi_bee.official/",
+    "website": "https://chi-bee.jp/",
+    "source": "https://store.tsite.jp/nara/event/shop/55109-1255140617.html",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "STRIKE THREE スウェット",
+        "description": "Take 的棒球主題大學 T，以角色 Nelson 的投球與打擊情境為設計內容。",
+        "source": "https://chi-bee.jp/?pid=194189012",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "12",
+    "name": "Check The Weather (Mitsuru Inaba)",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "日本圖像藝術家稲葉充以幽默、略帶奇異感的黑白手繪聞名，熱愛健行與登山；Check The Weather 為其以天氣與戶外生活延伸的服飾／圖像系列。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/mitsuru_inaba/",
+    "website": "https://mitsuruinaba.theshop.jp/",
+    "source": "https://www.filter017.com/products/A_M_C_Vol_002_Mitsuru_Inaba_Box_Set/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Check The Weather CAP",
+        "description": "Check The Weather 刺繡棒球帽，商品頁標示為快乾尼龍材質。",
+        "source": "https://mitsuruinaba.theshop.jp/items/72167987",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "13",
+    "name": "Jun Oson",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "活躍於插畫與藝術領域的日本創作者，作品涵蓋平面廣告、動畫、書籍與商品，並在亞洲、歐美舉辦個展，具有鮮明當代圖像語彙。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/junoson/",
+    "website": "https://junoson.com/",
+    "source": "https://www.solidus-tokyo.com/feature/jun-oson-en/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Zucca 渋谷パルコ",
+        "description": "JUNOSON 與 Zucca 合作的澀谷 PARCO 特設商店視覺作品，收錄於藝術家的 TIS 會員作品頁。",
+        "source": "https://www.tis-home.com/jun-oson/works/8132",
+        "sourceType": "藝術家 TIS 會員作品頁",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "IG 無法公開讀取作品；本次改以藝術家作品頁或合作／所屬單位官方頁面核對。"
+  },
+  {
+    "id": "14",
+    "name": "Bakumae",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "札幌出身的視覺藝術家，跨越平面及立體媒材，著有運用緞帶製作的 Ribbonesia、圖章拼貼 STAMP BY ME 等系列，重視手工結構與圖形趣味。",
+    "verification": "待確認",
+    "sourceNote": "資料註記｜目前以藝術家介紹頁作為資料來源，未確認獨立官方網站。",
+    "instagram": "https://www.instagram.com/bakumae/",
+    "website": "",
+    "source": "https://unknownasia.net/archives/artist_detail.php?aid=137&lang=&ymd=20210101",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "EYE OF FIRE Figure",
+        "description": "前田麥的 EYE OF FIRE 角色立體公仔，以黃色眼睛與藍色身體為主要形象。",
+        "source": "https://commonbase.jp/pages/baku-maeda-exhibition-eye-of-fire-figure",
+        "sourceType": "合作方 COMMON BASE 官網",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "IG 無法公開讀取作品；本次改以藝術家作品頁或合作／所屬單位官方頁面核對。"
+  },
+  {
+    "id": "15",
+    "name": "Jerry Ukai",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "日本插畫家與藝術創作者，主要與 NATAL DESIGN 及其他品牌合作，參與品牌視覺及跨界創作。",
+    "verification": "資訊已補充",
+    "sourceNote": "資料註記｜正式名稱、合作方向與 Instagram 由清單提供者補充；無獨立網站。",
+    "instagram": "https://www.instagram.com/jerry_ukai/",
+    "website": "",
+    "source": "",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Jerry Marquez スウェット",
+        "description": "以代表角色 Jerry Marquez 為左胸圖像的大學 T，出自藝術家官方 MARQUEZ SHOP。",
+        "source": "https://jerryukai.com/products/jerry-marquez-26aw-sweat",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "16",
+    "name": "MASAKA NINGYO／真坂人形",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "來自日本的人形創作品牌，以帶有幽默感的造型人物與動物為題材，作品包括招財貓、河童、狸貓、達摩等立體人形；兼具手作玩具與藝術收藏的趣味。",
+    "verification": "新增資料",
+    "sourceNote": "依最新附件歸於「藝術插畫」；目前提供作品販售參考頁，未確認獨立官網或官方 Instagram。",
+    "instagram": "",
+    "website": "",
+    "source": "",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "イエティの子ども（小雪怪）",
+        "description": "真坂人形的手工土人形，使用黏土、膠、胡粉及水干顏料製作。",
+        "source": "https://masakaningyo.thebase.in/items/108141525",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "17",
+    "name": "D3C",
+    "category": "藝術插畫",
+    "country": "台灣",
+    "description": "台灣視覺創作者，曾涉足廣告、刺青及服裝設計，結合古著、裁縫、布料與生活植物意象，也是 HAKKEI 白景相關創作的重要人物。",
+    "verification": "待確認",
+    "sourceNote": "資料註記｜目前以 BEAMS 專訪／合作介紹為參考；未確認獨立官網。",
+    "instagram": "https://www.instagram.com/dango_3_color/",
+    "website": "",
+    "source": "https://www.beams.tw/news/2412D3C/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "D3C 松吉 EX — Grow Wild",
+        "description": "與 BEAMS 合作的布植物限定作品，結合角色「松吉」、布料工藝與專用盆器。",
+        "source": "https://www.beams.tw/news/2412D3C/",
+        "sourceType": "合作方 BEAMS 官網",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "IG 無法公開讀取作品；本次改以藝術家作品頁或合作／所屬單位官方頁面核對。"
+  },
+  {
+    "id": "18",
+    "name": "Tsen Lin",
+    "category": "藝術插畫",
+    "country": "台灣",
+    "description": "台灣圖像藝術家，曾參與 FILTER017 Culture Supply 的 A.M.C. 藝術家微型膠囊企劃，發展圖像創作及應用商品。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜名稱統一為 Tsen Lin；Instagram 與 TSNProduction 作品／商品頁由清單提供者補充。",
+    "instagram": "https://www.instagram.com/tsnproduce/",
+    "website": "https://bubee-studio.com/collections/tsnproduction",
+    "source": "https://www.crealivedept.com/pages/amc-1",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Hopping Frog Poster 跳水青蛙海報",
+        "description": "Tsen Lin／TSN Production 的三色孔版印刷 A3 海報，於 STUDIO BUBEE 作品商店展示。",
+        "source": "https://bubee-studio.com/collections/tsnproduction/products/hopping-frog-poster-%E8%B7%B3%E6%B0%B4%E9%9D%92%E8%9B%99%E6%B5%B7%E5%A0%B1",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "19",
+    "name": "LIKUANZHEN",
+    "category": "藝術插畫",
+    "country": "台灣",
+    "description": "1991 年生於南投埔里，具有服裝設計背景；2020 年起投入數位插畫，後延伸至壓克力繪畫，作品以超現實的視覺隱喻探索情緒、成長與自我光芒。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜個人 Instagram 與 Linktree 連結由清單提供者補充；Linktree 為個人連結集合頁。",
+    "instagram": "https://www.instagram.com/likuanzhen/",
+    "website": "https://linktr.ee/likuanzhen",
+    "source": "https://viewingroom.eslitegallery.com/2024-animamix/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "THE HOLY BIBLE",
+        "description": "藝術家個人 Linktree 所列的出版／商品系列，詳細版本與內容請見原始連結。",
+        "source": "https://myship.7-11.com.tw/general/detail/GM2608194891937",
+        "sourceType": "藝術家個人 Linktree／連結商店",
+        "checkedAt": "2026-11-17"
+      },
+      {
+        "title": "NICE MELODY POST VOL.1",
+        "description": "藝術家個人 Linktree 所列的 NICE MELODY POST 出版品與周邊系列。",
+        "source": "https://myship.7-11.com.tw/general/detail/GM2607233351066",
+        "sourceType": "藝術家個人 Linktree／連結商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "名稱取自藝術家個人 Linktree，原始來源指向其列出的商品商店。"
+  },
+  {
+    "id": "20",
+    "name": "Thinkgs",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "以繽紛、積極的圖像與角色創作為特色，融入美式餐館與流行文化；2026 年於 BEAMS CULTUART 舉辦首次個展，並推出杯盤與方巾等設計商品。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜商店網址由清單提供者補充；此連結為線上商店。",
+    "instagram": "https://www.instagram.com/thinkgs_2020/",
+    "website": "https://thinkgs.stores.jp/",
+    "source": "https://www.beams.co.jp/news/4746/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Vintage club (pink)",
+        "description": "Thinkgs 官方商店的角色作品，商品頁列出本體尺寸約高 45 公分、寬 15 公分。",
+        "source": "https://thinkgs.stores.jp/items/6afaa6c1a3869659faa340ce",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "21",
+    "name": "Ren Yamakawa 山川 鎌",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "1994 年生於埼玉，畢業於多摩美術大學；以生活片段為靈感創作「HAVE A GOOD DAY」刺繡布章日記，在平面設計與插畫領域間持續創作。",
+    "verification": "待確認",
+    "sourceNote": "資料註記｜網站為本人相關品牌／作品商店，不是獨立個人網站。",
+    "instagram": "https://www.instagram.com/ren_yamakawa/",
+    "website": "https://storegoodday.thebase.in/",
+    "source": "https://storegoodday.thebase.in/about",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "AT CAT 刺繡布章",
+        "description": "山川鎌以貓為主題的角色刺繡布章，收錄於其 STORE GOOD DAY 商店。",
+        "source": "https://storegoodday.thebase.in/items/139320043",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "22",
+    "name": "Nobuhito Tanaka 田中野歩人",
+    "category": "藝術插畫",
+    "country": "日本",
+    "description": "1992 年生於神奈川，畢業於東京造形大學繪畫專攻；兼具畫家、插畫家與音樂人身分，受音樂、玩具及漫畫啟發，以明快幽默的方式表現流行文化。",
+    "verification": "待確認",
+    "sourceNote": "資料註記｜Instagram 帳號由清單提供者補充；依要求移除無法開啟的個人網站。",
+    "instagram": "https://www.instagram.com/nobuhito_tanaka/",
+    "website": "",
+    "source": "https://www.mistore.jp/store/shinjuku/shops/art/artgallery/shopnews_list/shopnews017.html",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "「オデュッセイア – マナーの鬼、見参」文章插畫",
+        "description": "空中カメラ官方部落格於 2026 年 9 月 28 日刊載的插畫，署名：繪圖 田中野歩人、文字 寒川響。",
+        "source": "https://kuchucamera.com/blog/2026/09/28/the-odyssey/",
+        "sourceType": "所屬樂團官方部落格",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "IG 無法公開讀取作品；本次改以藝術家作品頁或合作／所屬單位官方頁面核對。"
+  },
+  {
+    "id": "23",
+    "name": "Pagetsou 鄒駿昇",
+    "category": "藝術插畫",
+    "country": "台灣",
+    "description": "台灣視覺藝術家及 AUSPICIOUS 工作室創辦人，以帶有東西方文化融合的復古未來主義、超現實敘事與細膩繪畫聞名，擅於在奇想畫面中討論社會議題。",
+    "verification": "待確認",
+    "sourceNote": "資料註記｜官網來自過往訪談資料，可能有異動，開啟前仍可核對。",
+    "instagram": "https://www.instagram.com/pagetsou/",
+    "website": "https://pagetsou.com/",
+    "source": "https://neocha.com/magazine/retrofuturism-with-page-tsou/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "Secret Garden 2022",
+        "description": "鄒駿昇官方作品頁展示的 Secret Garden 2022 插畫作品。",
+        "source": "https://www.pagetsou.com/portfolio-item/shades-of-marble/",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "24",
+    "name": "ZAK",
+    "category": "出版",
+    "country": "捷克、日本",
+    "description": "ZAK 為與雜誌、獨立刊物（zine）相關的創作／出版項目。已取得 Instagram 與 ZAK Zine 網站，可由官方頁面進一步了解其內容與出版方向。",
+    "verification": "連結已補充",
+    "sourceNote": "資料註記｜Instagram 與網站由清單提供者補充；創辦背景與所在地尚待核對。",
+    "instagram": "https://www.instagram.com/zak_magazine/",
+    "website": "https://zakzine.online/",
+    "source": "",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "ZAK 21 / 2026",
+        "description": "日本創意文化刊物第 21 期，官方印刷版介紹列出封面藝術家 Kousuke Shimizu。",
+        "source": "https://zakzine.online/zak-edition-21/",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  },
+  {
+    "id": "25",
+    "name": "Ken Elephant",
+    "category": "藝術收藏",
+    "country": "日本",
+    "description": "日本創意製造與發行公司，經營精緻迷你模型、扭蛋、藝術軟膠玩具、VINYL 藝廊／商店與出版等計畫，連結插畫家、文化物件和收藏市場。",
+    "verification": "已找到公開資料",
+    "sourceNote": "",
+    "instagram": "https://www.instagram.com/kenelephant2000/",
+    "website": "https://kenelephant.co.jp/",
+    "source": "https://kenelephant.co.jp/",
+    "contact": "",
+    "person": "",
+    "status": "未聯繫",
+    "lastContact": "",
+    "notes": "",
+    "works": [
+      {
+        "title": "mojojojo Pack Charm",
+        "description": "以毛絨玩具包裝為造型的吊飾系列，內含透明版本公仔，出自 KENELE STORE。",
+        "source": "https://kenelestore.jp/products/gc0792c",
+        "sourceType": "官網／官方商店",
+        "checkedAt": "2026-11-17"
+      }
+    ],
+    "worksNote": "公開來源選錄，非銷售排名；可依合作需求自行更換或新增。"
+  }
+]</script><script id="works-model">const WorksModel=(()=>{
+function url(value){if(typeof value!=='string')return '';try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
+function works(value){if(!Array.isArray(value))return [];if(value.length>50)throw Error('單筆作品上限為 50 件');return value.filter(x=>x&&typeof x==='object'&&typeof x.title==='string'&&x.title.trim()).map(x=>({title:x.title.trim().slice(0,300),description:typeof x.description==='string'?x.description.slice(0,5000):'',source:url(x.source),sourceType:typeof x.sourceType==='string'?x.sourceType.slice(0,100):'',checkedAt:typeof x.checkedAt==='string'?x.checkedAt.slice(0,30):''}))}
+function normalise(input,seeds,statuses){const list=Array.isArray(input)?input:input?.records;if(!Array.isArray(list)||list.length>10000)throw Error('備份格式錯誤');const ids=new Set;return list.map(x=>{if(!x||typeof x!=='object'||typeof x.name!=='string'||!x.name.trim())throw Error('缺少名稱');const r={};for(const k of Object.keys(seeds[0]))if(k!=='works')r[k]=typeof x[k]==='string'?x[k]:'';r.id=r.id||crypto.randomUUID();if(ids.has(r.id))r.id=crypto.randomUUID();ids.add(r.id);r.status=statuses.includes(r.status)?r.status:'未聯繫';const initial=seeds.find(s=>s.id===r.id&&s.name===r.name);r.works=works(Object.hasOwn(x,'works')?x.works:initial?.works);r.worksNote=typeof x.worksNote==='string'?x.worksNote:(initial?.worksNote||'尚未整理代表商品／作品，可從官網或 IG 手動新增。');return r})}
+return {normalise,works,url};
+})();
+</script><script>
+const $=id=>document.getElementById(id),seed=JSON.parse($('seed').textContent),key='brand-directory-v1';let data=structuredClone(seed),scope='all',table=false,editing=null,timer;const statuses=['未聯繫','已聯繫','洽談中','已合作','暫緩'];
+function toast(s){$('toast').textContent=s;clearTimeout(timer);timer=setTimeout(()=>$('toast').textContent='',4000)}
+try{const saved=localStorage.getItem(key);if(saved)data=validate(JSON.parse(saved))}catch{toast('無法讀取本機資料，已載入原始清單；請先匯出備份。')}
+function validate(input){return WorksModel.normalise(input,seed,statuses)}
+function commit(next){try{localStorage.setItem(key,JSON.stringify(next));data=next;render();return true}catch{toast('儲存失敗，請匯出備份或檢查瀏覽器儲存空間。');return false}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function safeUrl(s){try{const u=new URL(s);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
+function link(s,t){const u=safeUrl(s);return u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${t} ↗</a>`:''}function needsReview(r){return /待|確認|不明/.test(r.verification+' '+r.sourceNote)||!r.instagram||!r.website}
+function options(id,label,values){const el=$(id),old=el.value;el.replaceChildren(new Option(label,''),...values.map(v=>new Option(v,v)));el.value=values.includes(old)?old:''}
+function filtered(){const q=$('search').value.trim().toLowerCase();return data.filter(r=>(scope!=='follow'||r.status!=='未聯繫')&&(scope!=='review'||needsReview(r))&&(!$('category').value||r.category===$('category').value)&&(!$('country').value||r.country===$('country').value)&&(!$('status').value||r.status===$('status').value)&&(!q||[...Object.values(r).filter(x=>typeof x==='string'),...(r.works||[]).flatMap(w=>[w.title,w.description])].join(' ').toLowerCase().includes(q)))}
+function render(){options('category','全部分類',[...new Set(data.map(r=>r.category).filter(Boolean))]);options('country','全部國籍',[...new Set(data.map(r=>r.country).filter(Boolean))]);options('status','全部聯繫狀態',statuses);$('stats').innerHTML=[[data.length,'品牌與藝術家'],[new Set(data.map(r=>r.category).filter(Boolean)).size,'精選分類'],[data.filter(r=>r.status!=='未聯繫').length,'已展開聯繫'],[data.filter(needsReview).length,'資料待確認']].map(([n,t])=>`<div class="stat"><b>${n.toString().padStart(2,'0')}</b><span>${t}</span></div>`).join('');const rows=filtered();$('count').textContent=`顯示 ${rows.length} 筆 / 共 ${data.length} 筆`;const box=$('records');box.className=table?'tablewrap':'grid';if(!rows.length){box.innerHTML='<div class="empty">沒有符合條件的項目，試著調整篩選或新增品牌。</div>';return}box.innerHTML=table?`<table><thead><tr><th>名稱</th><th>分類</th><th>國籍</th><th>代表商品／作品</th><th>聯繫狀態</th><th>聯繫人／方式</th><th>最後聯繫</th><th>管理</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.category)}</td><td>${esc(r.country)}</td><td><button data-gallery="${esc(r.id)}">${r.works?.length?`${r.works.length} 件 · 瀏覽作品`:'待補 · 查看'}</button></td><td>${esc(r.status)}</td><td>${esc(r.person)} ${esc(r.contact)}</td><td>${esc(r.lastContact)||'—'}</td><td><button data-edit="${esc(r.id)}">編輯</button></td></tr>`).join('')}</tbody></table>`:rows.map(r=>`<article class="card">${cover(r)}<div class="cardtop"><span class="tag">${esc(r.category||'未分類')}</span><span>${esc(r.status)}</span></div><h2>${esc(r.name)}</h2><p class="meta">${esc(r.country||'國籍待補')} ${needsReview(r)?' · 資料待確認':''}</p><p class="desc">${esc(r.description||'尚無介紹')}</p><div class="cardfoot"><div class="links">${link(r.instagram,'IG')}${link(r.website,'官網')}</div><button class="edit" data-edit="${esc(r.id)}">查看／編輯 ↗</button></div></article>`).join('')}
+let draftWorks=[],galleryRecord=null;
+function cover(r){const works=r.works||[];return `<button class="work-preview" type="button" data-gallery="${esc(r.id)}" aria-label="瀏覽 ${esc(r.name)} 的代表商品與作品"><span class="work-preview-label">代表商品／作品 <span>${works.length} 件 ↗</span></span>${works.length?`<span class="work-preview-title">${esc(works[0].title)}</span>${works.length>1?`<span class="work-preview-more">＋ ${works.length-1} 件作品</span>`:''}`:'<span class="work-preview-more">尚未整理，點擊新增</span>'}</button>`}
+function renderWorkFields(){$('work-fields').innerHTML=draftWorks.length?draftWorks.map((w,i)=>`<div class="work-field"><div class="work-field-head"><b>作品 ${i+1}</b><button type="button" data-remove-work="${i}" aria-label="移除第 ${i+1} 件作品">移除</button></div><div class="fields"><label class="full">商品／作品名稱 *<input name="work-title-${i}" value="${esc(w.title||'')}" required maxlength="300"></label><label class="full">簡介<textarea name="work-description-${i}" maxlength="5000">${esc(w.description||'')}</textarea></label><label class="full">官網／IG 來源網址<input name="work-source-${i}" type="url" value="${esc(w.source||'')}" placeholder="商品頁、作品頁或 IG 貼文網址"></label><label>來源類型<input name="work-sourceType-${i}" value="${esc(w.sourceType||'')}" placeholder="官網／官方商店／Instagram"></label><label>整理日期<input name="work-checkedAt-${i}" type="date" value="${esc(w.checkedAt||'')}"></label></div></div>`).join(''):'<p class="muted">尚未新增作品。可從官網或 IG 整理商品／作品名稱、簡介與來源連結。</p>'}
+function readWorkFields(){return draftWorks.map((w,i)=>{const field=k=>$('form').elements.namedItem(`work-${k}-${i}`).value.trim();return {title:field('title'),description:field('description'),source:field('source'),sourceType:field('sourceType'),checkedAt:field('checkedAt')}})}
+$('add-work').onclick=()=>{if(draftWorks.length>=50){toast('每筆最多可新增 50 件作品');return}draftWorks=readWorkFields();draftWorks.push({title:'',source:'',description:'',sourceType:'',checkedAt:date()});renderWorkFields();$('form').elements.namedItem(`work-title-${draftWorks.length-1}`).focus()};
+$('work-fields').onclick=e=>{const b=e.target.closest('[data-remove-work]');if(b){draftWorks=readWorkFields();draftWorks.splice(Number(b.dataset.removeWork),1);renderWorkFields()}};
+function openGallery(id){galleryRecord=data.find(r=>r.id===id);if(!galleryRecord)return;renderGallery();$('gallery').showModal()}
+function renderGallery(){const r=galleryRecord,works=r.works||[];$('gallery-title').textContent=r.name;$('gallery-note').textContent=r.worksNote||'公開來源選錄，非銷售排名。';$('gallery-body').innerHTML=works.length?`<div class="work-list">${works.map((w,i)=>`<article class="work-detail"><div class="small muted">代表商品／作品 ${i+1}</div><h3>${esc(w.title)}</h3><p>${esc(w.description||'尚無作品簡介')}</p><div class="work-source"><span>${esc(w.sourceType||'來源待補')} ${w.checkedAt?' · 整理日期 '+esc(w.checkedAt):''}</span>${link(w.source,'查看原始來源')}</div></article>`).join('')}</div>`:`<div class="work-missing"><h3>代表商品／作品待補充</h3><p class="muted">可從官網或 IG 整理作品後，點選下方「編輯作品」新增。</p><div class="links" style="justify-content:center">${link(r.website,'瀏覽官網')}${link(r.instagram,'瀏覽 Instagram')}</div></div>`}
+$('gallery-close').onclick=()=>$('gallery').close();$('gallery-edit').onclick=()=>{const id=galleryRecord.id;$('gallery').close();edit(id)};
+
+const fields=[['name','品牌／藝術家名稱','text',true],['category','分類','text'],['country','國籍／地區','text'],['status','聯繫狀態','select'],['description','介紹','textarea'],['instagram','Instagram 網址','url'],['website','官網網址','url'],['person','聯繫人','text'],['contact','聯繫方式（Email／電話／其他）','text'],['lastContact','最後聯繫日期','date'],['verification','資料確認狀態','text'],['source','資料來源網址','url'],['sourceNote','原始資料註記','textarea'],['notes','合作／聯繫備註','textarea'],['worksNote','代表商品／作品整理註記','textarea']];
+function edit(id){editing=id;const r=data.find(r=>r.id===id)||{status:'未聯繫'};$('formtitle').textContent=id?'查看與編輯資料':'新增品牌／藝術家';$('fields').innerHTML=fields.map(([k,t,type,required])=>`<label class="${type==='textarea'?'full':''}">${t}${required?' *':''}${type==='textarea'?`<textarea name="${k}">${esc(r[k]||'')}</textarea>`:type==='select'?`<select name="${k}">${statuses.map(s=>`<option ${s===r[k]?'selected':''}>${s}</option>`).join('')}</select>`:`<input name="${k}" type="${type}" value="${esc(r[k]||'')}" ${required?'required maxlength="200"':''}>`}</label>`).join('');draftWorks=structuredClone(r.works||[]);renderWorkFields();$('delete').hidden=!id;$('editor').showModal()}
+$('form').onsubmit=e=>{e.preventDefault();const base=data.find(r=>r.id===editing)||Object.fromEntries(Object.keys(seed[0]).filter(k=>k!=='works').map(k=>[k,'']));const values=Object.fromEntries(new FormData(e.target));for(const k of Object.keys(values))if(k.startsWith('work-'))delete values[k];const r={...base,...values,id:editing||crypto.randomUUID(),works:WorksModel.works(readWorkFields())};r.name=r.name.trim();if(!r.name){toast('請輸入名稱');return}if(commit(editing?data.map(x=>x.id===editing?r:x):[...data,r])){$('editor').close();toast('已儲存至此瀏覽器')}};
+$('delete').onclick=()=>{if(confirm('確定刪除此筆資料？此操作無法復原，建議先匯出備份。')&&commit(data.filter(r=>r.id!==editing))){$('editor').close();toast('已刪除')}};
+$('records').onclick=e=>{const g=e.target.closest('[data-gallery]');if(g){openGallery(g.dataset.gallery);return}const b=e.target.closest('[data-edit]');if(b)edit(b.dataset.edit)};$('add').onclick=()=>edit(null);$('close').onclick=$('cancel').onclick=()=>$('editor').close();for(const id of ['search','category','country','status'])$(id).addEventListener('input',render);document.querySelectorAll('[data-scope]').forEach(b=>b.onclick=()=>{scope=b.dataset.scope;document.querySelectorAll('[data-scope]').forEach(x=>x.classList.toggle('active',x===b));$('heading').textContent=scope==='all'?'品牌與藝術家名錄':scope==='follow'?'聯繫追蹤':'待確認資料';render()});$('clear').onclick=()=>{for(const id of ['search','category','country','status'])$(id).value='';render()};$('view').onclick=()=>{table=!table;$('view').textContent=table?'切換卡片':'切換表格';$('view').setAttribute('aria-pressed',table);render()};
+function download(text,type,name){const url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}const date=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Taipei'});$('backup').onclick=()=>download(JSON.stringify({version:2,exportedAt:new Date().toISOString(),records:data},null,2),'application/json',`品牌名錄備份-${date()}.json`);$('csv').onclick=()=>{const cols=[['name','名稱'],['category','分類'],['country','國籍'],['description','介紹'],['instagram','IG'],['website','官網'],['person','聯繫人'],['contact','聯繫方式'],['status','聯繫狀態'],['lastContact','最後聯繫'],['notes','備註'],['verification','確認狀態'],['sourceNote','原始註記'],['source','資料來源'],['worksNote','作品整理註記'],['representativeWorks','代表商品／作品（含來源）']];const cell=s=>'"'+String(s??'').replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';download('\ufeff'+[cols.map(x=>cell(x[1])).join(','),...data.map(r=>cols.map(([k])=>cell(k==='representativeWorks'?(r.works||[]).map(w=>[w.title,w.description,w.source,w.checkedAt].filter(Boolean).join('｜')).join('\n'):r[k])).join(','))].join('\r\n'),'text/csv;charset=utf-8',`品牌名錄-${date()}.csv`)};$('import').onclick=()=>$('file').click();$('file').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;if(file.size>10000000)throw Error('檔案超過 10 MB');const rows=validate(JSON.parse(await file.text()));if(confirm(`此備份有 ${rows.length} 筆資料，將取代目前 ${data.length} 筆。請確認已備份現有資料。`)&&commit(rows))toast('備份已匯入')}catch(err){toast('匯入失敗：'+err.message)}finally{e.target.value=''}};window.addEventListener('storage',e=>{if(e.key===key){try{data=e.newValue?validate(JSON.parse(e.newValue)):structuredClone(seed);render();toast('已同步此瀏覽器其他分頁的修改')}catch{toast('其他分頁資料無法讀取')}}});render();
+</script></body></html>
